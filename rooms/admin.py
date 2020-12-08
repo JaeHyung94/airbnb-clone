@@ -72,6 +72,8 @@ class RoomAdmin(admin.ModelAdmin):
         "check_out",
         "instant_book",
         "count_amenities",
+        "count_facilities",
+        "count_house_rules",
         "count_photos",
         "total_rating",
     )
@@ -101,9 +103,21 @@ class RoomAdmin(admin.ModelAdmin):
     def count_amenities(self, obj):
         return obj.amenities.count()
 
+    count_amenities.short_description = "Aminities"
+
+    def count_facilities(self, obj):
+        return obj.facilities.count()
+
+    count_facilities.short_description = "Facilities"
+
+    def count_house_rules(self, obj):
+        return obj.house_rules.count()
+
+    count_facilities.short_description = "Hose Rules"
+
     def count_photos(self, obj):
         return obj.photos.count()
-    
+
     count_photos.short_description = "Photo Count"
 
 
