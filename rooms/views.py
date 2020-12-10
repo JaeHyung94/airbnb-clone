@@ -87,12 +87,10 @@ class SearchView(View):
 
                 qs = models.Room.objects.filter(**filter_args).order_by("created")
 
-                paginator = Paginator(qs, 1)
+                paginator = Paginator(qs, 10, orphans=5)
                 page = request.GET.get("page", 1)
                 print(page)
                 rooms = paginator.get_page(page)
-                url = request.GET.get("search?")
-                print(url)
 
                 return render(
                     request, "rooms/search.html", {"form": form, "rooms": rooms}
