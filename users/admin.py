@@ -48,4 +48,6 @@ class CustomUSerAdmin(UserAdmin):
         "superhost",
         "is_staff",
         "superhost",
+        "email_verified",
+        "email_secret",
     )
