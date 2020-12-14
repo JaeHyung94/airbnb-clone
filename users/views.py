@@ -3,6 +3,7 @@ import requests
 from django.views import View
 from django.views.generic import FormView
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, reverse
 from . import forms, models
@@ -56,9 +57,33 @@ def log_out(request):
     return redirect(reverse("core:home"))
 
 
+""" Custom Signup Form """
+# class SignupView(FormView):
+#     template_name = "users/signup.html"
+#     form_class = forms.SignupForm
+#     success_url = reverse_lazy("core:home")
+
+#     def form_valid(self, form):
+#         form.save()
+
+#         email = form.cleaned_data.get("email")
+#         password = form.cleaned_data.get("password")
+
+#         user = authenticate(self.request, username=email, password=password)
+
+#         if user is not None:
+#             login(self.request, user)
+
+#         user.verify_email()
+
+#         return super().form_valid(form)
+
+""" User Creation Form """
+
+
 class SignupView(FormView):
     template_name = "users/signup.html"
-    form_class = forms.SignupForm
+    form_class = UserCreationForm
     success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
@@ -153,6 +178,7 @@ def github_callback(request):
                             username=email,
                             bio=bio,
                             login_method=models.User.LOGIN_GITHUB,
+                            email_verified=True,
                         )
                         user.set_unusable_password()
                         user.save()
@@ -187,10 +213,56 @@ class KakaoExeption(Exception):
 def kakao_callback(request):
     try:
         client_id = os.environ.get("KAKAO_SECRET")
+        redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
         code = request.GET.get("code")
 
-        token_request = requests.post(
-            f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}"
-        )
+        if code is not None:
+            token_request = requests.post(
+                f"https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id={client_id}&redirect_uri={redirect_uri}&code={code}"
+            )
+
+            token_json = token_request.json()
+            access_token = token_json.get("access_token")
+            error = token_json.get("error", None)
+
+            if error is not None:
+                raise KakaoExeption()
+            else:
+                profile_request = requests.get(
+                    "https://kapi.kakao.com/v2/user/me",
+                    headers={"authorization": f"Bearer {access_token}"},
+                )
+
+                profile_json = profile_request.json()
+                user_id = profile_json.get("id")
+
+                if user_id:
+                    name = (
+                        profile_json.get("kakao_account").get("profile").get("nickname")
+                    )
+                    email = profile_json.get("kakao_account").get("email")
+
+                    try:
+                        user = models.User.objects.get(email=email)
+
+                        if user.login_method != models.User.LOGIN_KAKAO:
+                            raise KakaoExeption()
+                    except models.User.DoesNotExist:
+                        user = models.User.objects.create(
+                            email=email,
+                            username=email,
+                            first_name=name,
+                            login_method=models.User.LOGIN_KAKAO,
+                            email_verified=True,
+                        )
+                        user.set_unusable_password()
+                        user.save()
+                    login(request, user)
+                    return redirect(reverse("core:home"))
+                else:
+                    raise KakaoExeption()
+        else:
+            raise KakaoExeption()
+
     except KakaoExeption:
         return redirect(reverse("users:login"))

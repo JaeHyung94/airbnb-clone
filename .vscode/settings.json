@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/Users/parkjaehyung/.local/share/virtualenvs/airbnb-clone-3MLs7rya/bin/python",
+    "python.pythonPath": "/home/jaypark/.local/share/virtualenvs/airbnb-clone-v2-Rx-vDE9g/bin/python",
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
