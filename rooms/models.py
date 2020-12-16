@@ -111,3 +111,21 @@ class Room(core_models.TimeStampedModel):
             return round(all_ratings / len(all_reviews), 2)
         except ZeroDivisionError:
             return 0
+
+    def first_photo(self):
+        (photo,) = self.photos.all()[:1]
+        return photo.file.url
+
+    def room_name(self):
+        if len(self.name) >= 40:
+            return self.name[:40]
+        else:
+            return self.name
+
+    def room_country(self):
+        name = self.country.name
+
+        if len(name) >= 20:
+            return self.country
+        else:
+            return self.country.name
