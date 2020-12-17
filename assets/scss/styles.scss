@@ -10,10 +10,34 @@ html {
 }
 
 .nav_link {
-  @apply ml-8 border-b-2 border-white hover:border-gray-600 h-full flex items-center;
+  @apply ml-8 border-b-2 border-white h-full flex items-center;
 
   a {
     @apply py-10 px-5;
+  }
+
+  &:hover {
+    @apply border-gray-600;
+  }
+}
+
+.btn {
+  @apply text-center rounded-sm py-5 font-light text-lg w-full;
+}
+
+input {
+  @apply rounded-sm py-5 font-light text-lg w-full text-left border border-gray-400 px-5 focus:outline-none focus:border-indigo-400;
+}
+
+form {
+  .input {
+    @apply mb-3;
+
+    &.has_error {
+      input {
+        @apply bg-red-200 border-gray-400 focus:border-gray-400;
+      }
+    }
   }
 }
 

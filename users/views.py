@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, reverse
+from django.contrib import messages
 from . import forms, models
 
 # Create your views here.
@@ -83,7 +84,7 @@ def log_out(request):
 
 class SignupView(FormView):
     template_name = "users/signup.html"
-    form_class = UserCreationForm
+    form_class = forms.SignupForm
     success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
@@ -143,8 +144,7 @@ def github_callback(request):
             error = token_json.get("error", None)
 
             if error is not None:
-                print("1")
-                raise GithubException()
+                raise GithubException("Can't get access token")
             else:
                 access_token = token_json.get("access_token")
                 profile_request = requests.get(
@@ -169,8 +169,9 @@ def github_callback(request):
                         user = models.User.objects.get(email=email)
 
                         if user.login_method != models.User.LOGIN_GITHUB:
-                            print("2")
-                            raise GithubException()
+                            raise GithubException(
+                                f"Please log in with: {user.login_method}"
+                            )
                     except models.User.DoesNotExist:
                         user = models.User.objects.create(
                             email=email,
@@ -183,17 +184,16 @@ def github_callback(request):
                         user.set_unusable_password()
                         user.save()
                     login(request, user)
+                    messages.success(request, f"Welcome back {user.first_name}")
                     return redirect(reverse("core:home"))
 
                 else:
-                    print("4")
-                    raise GithubException()
+                    raise GithubException("Can't get your profile")
 
         else:
-            print("5")
-            raise GithubException()
-    except GithubException:
-        # send error message
+            raise GithubException("Can't get code")
+    except GithubException as e:
+        messages.error(request, e)
         return redirect(reverse("users:login"))
 
 
@@ -226,7 +226,7 @@ def kakao_callback(request):
             error = token_json.get("error", None)
 
             if error is not None:
-                raise KakaoExeption()
+                raise KakaoExeption("Can't get authorization code")
             else:
                 profile_request = requests.get(
                     "https://kapi.kakao.com/v2/user/me",
@@ -236,33 +236,33 @@ def kakao_callback(request):
                 profile_json = profile_request.json()
                 user_id = profile_json.get("id")
 
-                if user_id:
-                    name = (
-                        profile_json.get("kakao_account").get("profile").get("nickname")
+                if user_id is None:
+                    raise KakaoExeption("Please also give me your email")
+
+                name = profile_json.get("kakao_account").get("profile").get("nickname")
+                email = profile_json.get("kakao_account").get("email")
+
+                try:
+                    user = models.User.objects.get(email=email)
+
+                    if user.login_method != models.User.LOGIN_KAKAO:
+                        raise KakaoExeption(f"Please log in with: {user.login_method}")
+                except models.User.DoesNotExist:
+                    user = models.User.objects.create(
+                        email=email,
+                        username=email,
+                        first_name=name,
+                        login_method=models.User.LOGIN_KAKAO,
+                        email_verified=True,
                     )
-                    email = profile_json.get("kakao_account").get("email")
-
-                    try:
-                        user = models.User.objects.get(email=email)
-
-                        if user.login_method != models.User.LOGIN_KAKAO:
-                            raise KakaoExeption()
-                    except models.User.DoesNotExist:
-                        user = models.User.objects.create(
-                            email=email,
-                            username=email,
-                            first_name=name,
-                            login_method=models.User.LOGIN_KAKAO,
-                            email_verified=True,
-                        )
-                        user.set_unusable_password()
-                        user.save()
-                    login(request, user)
-                    return redirect(reverse("core:home"))
-                else:
-                    raise KakaoExeption()
+                    user.set_unusable_password()
+                    user.save()
+                login(request, user)
+                messages.success(request, f"Welcome back {user.first_name}")
+                return redirect(reverse("core:home"))
         else:
             raise KakaoExeption()
 
-    except KakaoExeption:
+    except KakaoExeption as e:
+        messages.error(request, e)
         return redirect(reverse("users:login"))
