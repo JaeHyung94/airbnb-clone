@@ -57,11 +57,11 @@ form {
     opacity: 0;
     transform: translateY(-50px);
   }
-  5% {
+  10% {
     opacity: 1;
     transform: translateY(50px);
   }
-  95% {
+  90% {
     opacity: 1;
     transform: translateY(50px);
   }
@@ -72,7 +72,7 @@ form {
 }
 
 .message {
-  animation: messageFadeIn 5s ease-in-out forwards;
+  animation: messageFadeIn 2s ease-in-out forwards;
   &.error {
     @apply bg-red-600;
   }
@@ -87,6 +87,10 @@ form {
   &.warning {
     @apply bg-yellow-500;
   }
+}
+
+.border-section {
+  @apply border-b border-gray-400 pb-8 mt-8;
 }
 
 @tailwind utilities;

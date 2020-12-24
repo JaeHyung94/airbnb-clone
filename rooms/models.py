@@ -129,3 +129,25 @@ class Room(core_models.TimeStampedModel):
             return self.country
         else:
             return self.country.name
+
+    def get_next_four_photos(self):
+        photos = self.photos.all()[1:5]
+        return photos
+
+    def get_beds(self):
+        if self.beds == 1:
+            return "1 bed"
+        else:
+            return f"{self.beds} beds"
+
+    def get_bedrooms(self):
+        if self.bedrooms == 1:
+            return "1 bedroom"
+        else:
+            return f"{self.bedrooms} bedrooms"
+
+    def get_baths(self):
+        if self.baths == 1:
+            return "1 bath"
+        else:
+            return f"{self.baths} baths"

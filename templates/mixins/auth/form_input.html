@@ -11,6 +11,8 @@
 
 {% for field in form %}
     <div class="input w-full {% if field.errors %}has_error{% endif %}">
+
+        {{field.label}}
         {{field}}
         {% if field.errors %}
             
