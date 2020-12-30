@@ -103,7 +103,6 @@ Room Deatil
             {% if room.host == user %}
                 <a href="{% url "rooms:edit" room.pk %}" class="btn-link block">Edit Room</a>
             {% else %}
-                {{'something'|hot_capitals}}
                 {% if not request.session.is_hosting %}
                     
                     {% for calendar in room.get_calendars %}

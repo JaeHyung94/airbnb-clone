@@ -4,6 +4,12 @@ from . import models
 # Register your models here.
 
 
+@admin.register(models.BookedDay)
+class BookedDayAdmin(admin.ModelAdmin):
+
+    """ Booked Day Admin Definition """
+    pass
+
 @admin.register(models.Reservation)
 class ReservationAdmin(admin.ModelAdmin):
 

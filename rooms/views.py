@@ -21,7 +21,7 @@ class HomeView(ListView):
     ordering = "created"
     context_object_name = "rooms"
 
-
+ 
 class RoomDetail(DetailView):
 
     model = models.Room
