@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load hot_capitals %}
+{% load is_booked %}
 
 {% block page_name %}
 
@@ -115,7 +115,7 @@ Room Deatil
                         </div>
                         <div class="grid grid-cols-7 gap-1 justify-items-center">
                             {% for day in calendar.get_days %}
-                                
+                                {% is_booked room day as is_booked_boolean %}
                                 {% if day.number != 0 %}
                                     
                                     {% if day.past %}

@@ -8,7 +8,12 @@ from . import models
 class BookedDayAdmin(admin.ModelAdmin):
 
     """ Booked Day Admin Definition """
-    pass
+
+    list_display = (
+        "day",
+        "reservation",
+    )
+
 
 @admin.register(models.Reservation)
 class ReservationAdmin(admin.ModelAdmin):

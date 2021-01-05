@@ -5,6 +5,7 @@ from core import models as core_models
 
 # Create your models here.
 
+
 class BookedDay(core_models.TimeStampedModel):
 
     day = models.DateField()
@@ -13,6 +14,10 @@ class BookedDay(core_models.TimeStampedModel):
     class Meta:
         verbose_name = "Booked Day"
         verbose_name_plural = "Booked Days"
+
+    def __str__(self):
+        return self.day
+
 
 class Reservation(core_models.TimeStampedModel):
 
@@ -28,10 +33,7 @@ class Reservation(core_models.TimeStampedModel):
         (STATUS_CANCELLED, "Cancelled"),
     )
 
-    status = models.CharField(
-        choices=STATUS_CHOICES,
-        max_length=12,
-    )
+    status = models.CharField(choices=STATUS_CHOICES, max_length=12,)
     check_in = models.DateField()
     check_out = models.DateField()
     guest = models.ForeignKey(
@@ -61,8 +63,10 @@ class Reservation(core_models.TimeStampedModel):
             start = self.check_in
             end = self.check_out
             difference = end - start
-            
-            existing_booked_day = BookedDay.objects.filter(day__range=(start, end)).exists()
+
+            existing_booked_day = BookedDay.objects.filter(
+                day__range=(start, end)
+            ).exists()
 
             if not existing_booked_day:
                 super().save(*args, **kwargs)
