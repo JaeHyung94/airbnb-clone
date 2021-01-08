@@ -35,8 +35,7 @@ class Reservation(core_models.TimeStampedModel):
     )
 
     status = models.CharField(
-        choices=STATUS_CHOICES,
-        max_length=12,
+        choices=STATUS_CHOICES, max_length=12, default=STATUS_PENDING
     )
     check_in = models.DateField()
     check_out = models.DateField()
@@ -59,7 +58,10 @@ class Reservation(core_models.TimeStampedModel):
 
     def is_finished(self):
         now = timezone.now().date()
-        return now > self.check_out
+        is_finished = now > self.check_out
+        if is_finished:
+            BookedDay.objects.filter(reservation=self).delete()
+        return is_finished
 
     is_finished.boolean = True
 
