@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-11 22:55+0900\n"
+"POT-Creation-Date: 2021-01-12 16:01+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\templates\base.html:24
+#: templates/base.html:24
 msgid "Search by City"
 msgstr "도시로 검색"
 
-#: .\templates\partials\footer.html:3
+#: templates/partials/footer.html:4
 msgid "Please don't copy us."
 msgstr "복사하지 말아주세요."
 
-#: .\templates\partials\footer.html:4
+#: templates/partials/footer.html:5
 msgid "All rights reserved"
 msgstr "저작권 소유"

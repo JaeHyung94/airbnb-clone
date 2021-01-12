@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-12 17:23+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: templates/base.html:24
+msgid "Search by City"
+msgstr "도시로 검색"
+
+#: templates/partials/footer.html:4
+msgid "Please don't copy us."
+msgstr "복제하지 말아주세요"
+
+#: templates/partials/footer.html:5
+msgid "All rights reserved"
+msgstr "모든 권리 보유"
+
+#: templates/rooms/room_list.html:28
+#, python-format
+msgid " Page %(current_page)s of %(total_page)s "
+msgstr " 전체 %(total_page)s 페이지 중 %(current_page)s 페이지 "
+
+#: users/models.py:23
+msgid "Male"
+msgstr "남성"
+
+#: users/models.py:24
+msgid "Female"
+msgstr "여성"
+
+#: users/models.py:25
+msgid "Other"
+msgstr "기타"
+
+#: users/models.py:31
+msgid "English"
+msgstr "영어"
+
+#: users/models.py:31
+msgid "Korean"
+msgstr "한국어"
+
+#: users/models.py:48
+msgid "avatar"
+msgstr "프로필 사진"
+
+#: users/models.py:50
+msgid "gender"
+msgstr "성별"
+
+#: users/models.py:52
+msgid "bio"
+msgstr "소개"
+
+#: users/models.py:53
+msgid "birthdate"
+msgstr "생일"
+
+#: users/models.py:55
+msgid "language"
+msgstr "언어"

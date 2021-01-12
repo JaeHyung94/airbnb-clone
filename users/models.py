@@ -1,4 +1,5 @@
 import uuid
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.mail import send_mail
@@ -19,15 +20,15 @@ class User(AbstractUser):
     GENDER_OTHER = "other"
 
     GENDER_CHOICES = (
-        (GENDER_MALE, "Male"),
-        (GENDER_FEMALE, "Female"),
-        (GENDER_OTHER, "Other"),
+        (GENDER_MALE, _("Male")),
+        (GENDER_FEMALE, _("Female")),
+        (GENDER_OTHER, _("Other")),
     )
 
     LANGUAGE_EN = "en"
     LANGUAGE_KR = "kr"
 
-    LANGUAGE_CHOICES = ((LANGUAGE_EN, "English"), (LANGUAGE_KR, "Korean"))
+    LANGUAGE_CHOICES = ((LANGUAGE_EN, _("English")), (LANGUAGE_KR, _("Korean")))
 
     CURRENCY_USD = "usd"
     CURRENCY_KRW = "krw"
@@ -44,12 +45,18 @@ class User(AbstractUser):
         (LOGIN_KAKAO, "Kakao"),
     )
 
-    avatar = models.ImageField(blank=True, upload_to="avatars")
-    gender = models.CharField(choices=GENDER_CHOICES, max_length=10, blank=True)
-    bio = models.TextField(default="", blank=True)
-    birthdate = models.DateField(blank=True, null=True)
+    avatar = models.ImageField(_("avatar"), blank=True, upload_to="avatars")
+    gender = models.CharField(
+        _("gender"), choices=GENDER_CHOICES, max_length=10, blank=True
+    )
+    bio = models.TextField(_("bio"), default="", blank=True)
+    birthdate = models.DateField(_("birthdate"), blank=True, null=True)
     language = models.CharField(
-        choices=LANGUAGE_CHOICES, max_length=2, blank=True, default=LANGUAGE_KR
+        _("language"),
+        choices=LANGUAGE_CHOICES,
+        max_length=2,
+        blank=True,
+        default=LANGUAGE_KR,
     )
     currency = models.CharField(
         choices=CURRENCY_CHOICES, max_length=3, blank=True, default=CURRENCY_KRW

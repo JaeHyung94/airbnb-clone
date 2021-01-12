@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\박현준\\.virtualenvs\\airbnb-clone-MgFAQU32\\Scripts\\python.exe",
+    "python.pythonPath": "/Users/parkjaehyung/.local/share/virtualenvs/airbnb-clone-3MLs7rya/bin/python",
     "python.linting.pylintEnabled": false,
     "python.linting.flake8Enabled": true,
     "python.linting.enabled": true,
