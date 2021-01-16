@@ -10,4 +10,13 @@ def on_favs(context, room):
     the_list = list_models.List.objects.get_or_none(
         user=user, name="My Favourite Houses"
     )
+
+    if the_list is None:
+        list_models.List.objects.create(
+            user=user,
+            name="My Favourite Houses",
+        )
+
+        list_models.List.save()
+
     return room in the_list.rooms.all()
